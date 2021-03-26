@@ -1,4 +1,4 @@
-# articles-gists
+# Articles Code
 
 This repository holds the source codes that are published in our articles.
 For each article, there is an associated folder (with the same name of the article) which contains them.
