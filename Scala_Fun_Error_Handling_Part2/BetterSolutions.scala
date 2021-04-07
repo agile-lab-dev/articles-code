@@ -1,11 +1,8 @@
-def applyF1ToBoth(lat: Int, long: Int): Either[E, (Double, Double)]
-
-§
-
 import cats.syntax.either._
 
 def applyF1ToBoth(lat: Int, long: Int): Either[E, (Double, Double)] =
-  (f1(lat).toValidatedNec, f1(long).toValidatedNec) // Tuple2[ValidatedNec[E, Double], ValidatedNec[E, Double]]
+  (f1(lat).toValidatedNec, f1(long).toValidatedNec)
+// Tuple2[ValidatedNec[E, Double], ValidatedNec[E, Double]]
 
 §
 

@@ -6,11 +6,11 @@ final case class Invalid[+E](e: E) extends Validated[E, Nothing]
 
 §
 
+// Types
 type ValidatedNel[+E, +A] = Validated[NonEmptyList[E], A]
 type ValidatedNec[+E, +A] = Validated[NonEmptyChain[E], A]
 
-§
-
+// Functions to/from `Either`
 import cats.data.Validated
 
 Validated[E, A].toEither // Either[E, A]

@@ -5,11 +5,10 @@ set -e
 # DO NOT USE THIS SCRIPT DIRECTLY. INSTEAD USE carbon-image-generator.sh
 ################
 
-# Needed since carbon-now is slow
+# Maybe needed since carbon-now is slow
 sleep_time=0
 carbon_url="https://carbon.now.sh"
 embedded_carbon_url="${carbon_url}/embed"
-code_delimiter="§"
 tmp_splitted_file_location="${PWD}/.temporary"
 
 # Taken from an image on the Carbon web app, after importing a preset config
@@ -18,6 +17,7 @@ encoded_template="bg=rgba%28171%2C+184%2C+195%2C+1%29&t=blackboard&wt=none&l=tex
 GREEN_COLOR='\e[32m'
 RED_COLOR='\e[31m'
 NC='\e[39m' # No Color
+CODE_DELIMITER="§" # MUST BE ONLY ONE CHARACTER!!!
 
 USAGE="""Usage:
 -h|--help                          Print this help and exit
@@ -71,6 +71,11 @@ while [[ $# -gt 0 ]]; do
     CARBON_PRESET="${1}"
     shift
     ;;
+  -d | --delimiter)
+    shift
+    CODE_DELIMITER="${1}"
+    shift
+    ;;
   *)
     echo "Unrecognized option \"$ARG\""
     print_usage_and_exit 1
@@ -92,13 +97,17 @@ echo "SCRIPT PARAMS:"
 echo "SOURCES_PATH = $SOURCES_PATH"
 echo "CARBON_PRESET = $CARBON_PRESET"
 
-embedded_images_links_path="${SOURCES_PATH}/embedded_images_links"
+output_path="${SOURCES_PATH}/carbon_images"
+
+mkdir -p "${output_path}"
+
+embedded_images_links_path="${output_path}/embedded_images_links"
 declare -a embedded_images_list=()
 
-files=$(ls "${SOURCES_PATH}/")
+listed_files=$(ls -p "${SOURCES_PATH}" | grep -v /)
 
 subsection_count=0
-for source_code_file_name in ${files}; do
+for source_code_file_name in ${listed_files}; do
   source_code_absolute_path="${SOURCES_PATH}/${source_code_file_name}"
 
   # Takes the file name and deletes the longest matched substring (until a dot) starting from the end
@@ -112,26 +121,26 @@ for source_code_file_name in ${files}; do
   file_contents=$(<"${source_code_absolute_path}")
 
   # Check if we should split output onto more parts
-  if [[ ${file_contents} =~ ${code_delimiter} ]]; then
+  if [[ ${file_contents} =~ ${CODE_DELIMITER} ]]; then
     file_contains_delimiter=true
   else
     file_contains_delimiter=false
   fi
 
   originalIFS=${IFS}
-  IFS="${code_delimiter}"
+  IFS="${CODE_DELIMITER}"
   for code_section in ${file_contents}; do
     # If the section is not empty
     if [[ ${#code_section} != 0 ]]; then
 
-      if [[ "${file_contains_delimiter}" = true ]]; then
+      if [[ "${file_contains_delimiter}" == true ]]; then
         target_file_name="${partial_target_file_name}_part${subsection_count}"
       else
         target_file_name="${partial_target_file_name}"
       fi
 
       # Removes trailing spaces and leading/trailing whitespaces
-      trimmed_code="$(sed -e 's/[[:space:]]*$//' -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' <<< "${code_section}")"
+      trimmed_code="$(sed -e 's/[[:space:]]*$//' -e :a -e '/./,$!d;/^\n*$/{$d;N;};/\n$/ba' <<<"${code_section}")"
       # We write the trimmed code into a temp file
       echo "$trimmed_code" >"${tmp_splitted_file_location}"
 
@@ -145,7 +154,7 @@ for source_code_file_name in ${files}; do
       embedded_images_list+=("${embedded_image_output_file}")
 
       echo -e "${embedded_image_output_console}"
-      eval "carbon-now '${tmp_splitted_file_location}' -h -p ${CARBON_PRESET} -l '${SOURCES_PATH}' -t '${target_file_name}'"
+      eval "carbon-now '${tmp_splitted_file_location}' -h -p ${CARBON_PRESET} -l '${output_path}' -t '${target_file_name}'"
 
       rm "${tmp_splitted_file_location}"
       subsection_count=$((subsection_count + 1))
