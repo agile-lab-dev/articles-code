@@ -18,13 +18,11 @@ You can use the script as follow:
 
 This setups a docker for you, creates a subfolder named `carbon_images` under the specified `folder` and:
 - for non-embedded images, it uses `carbon-now` to generate them
-- for the embedded images, an URL is built using a default Scala theme applied to the source code files.
+- for the embedded images, an URL is built using a theme applied to the source code files.
 
 The subfolder `carbon_images` will contain:
 - a set of PNG images produced from the source files
 - a file named `embedded_images_links` which contains, for each image, to associated embedded URL to be used on Medium
-
-**Caveat**: Supports only Scala files. It could also work with other languages, but the formatting could be worse than expected.
 
 ### Details
 

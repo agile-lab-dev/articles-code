@@ -12,7 +12,7 @@ embedded_carbon_url="${carbon_url}/embed"
 tmp_splitted_file_location="${PWD}/.temporary"
 
 # Taken from an image on the Carbon web app, after importing a preset config
-encoded_template="bg=rgba%28171%2C+184%2C+195%2C+1%29&t=blackboard&wt=none&l=text%2Fx-scala&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false"
+encoded_template="bg=rgba%28171%2C+184%2C+195%2C+1%29&t=blackboard&wt=none&l=auto&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=false&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false"
 
 GREEN_COLOR='\e[32m'
 RED_COLOR='\e[31m'
