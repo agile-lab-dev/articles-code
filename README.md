@@ -22,18 +22,18 @@ This setups a docker for you, creates a subfolder named `carbon_images` under th
 
 The subfolder `carbon_images` will contain:
 - a set of PNG images produced from the source files
-- a file named `embedded_images_links` which contains, for each image, to associated embedded URL to be used on Medium
+- a file named `embedded_images_links` which contains, for each image, the associated embedded URL to be used on Medium
 
 ### Details
 
 By default, one file produces one embedded/non embedded image. For example, if the file is named `code.scala`, the resulting 
-non-embedded PNG image has name `code.png`.
+non-embedded PNG image will be named `code.png`.
 
 However, if you have a single file which contains multiple sections, you can put your code only in a file and then produce `N` 
 code images. 
 This can be extremely useful if you have big chunks of code that "logically" fits together. 
 
-You can do this by using the character `§` in your code. For example, if we have a file named `awesome.scala` like this:
+You can do this by using the character `§` in your source code file. For example, if we have a file named `awesome.scala` like this:
 
 ```scala
 val a = "wow"
@@ -44,7 +44,7 @@ val b = "incredible"
 ```
 
 The tool will produce two images: `awesome_part0.png`, which will contain `val a = wow` and `awesome_part1.png` which will contain
-`val b = "incredible"`. Of course, this leads also to the generation of two embedded URL's in the file `embedded_images_links`:
+`val b = "incredible"`. Of course, this also leads to the generation of two embedded URL's in the file `embedded_images_links`:
 
 ```bash
 awesome_part0.png ---> URL
